@@ -88,10 +88,18 @@ public class DebugWorldRenderer extends Renderer{
     }
 
     private void drawGridLines(boolean horizontal) {
+
         int start = horizontal ? (int) (this.camera.position.y - Spacewings.DEFAULT_SCREEN_HEIGHT) : (int) (this.camera.position.x - Spacewings.DEFAULT_SCREEN_WIDTH);
         int end = horizontal ? (int) (this.camera.position.y + Spacewings.DEFAULT_SCREEN_HEIGHT) : (int) (this.camera.position.x + Spacewings.DEFAULT_SCREEN_WIDTH);
+
         start = start - ( start % SPACE_BETWEEN_YELLOW_LINE ) ;
-        end = end - ( end % SPACE_BETWEEN_YELLOW_LINE ) ;
+        end = end + ( end % SPACE_BETWEEN_YELLOW_LINE ) ;
+
+        if(horizontal) {
+            System.out.println("----");
+            System.out.println("start = " + start);
+            System.out.println("end = " + end);
+        }
 
         for(int position = start; position < end ; position += SPACE_BETWEEN_WHITE_LINE) {
             if (position % SPACE_BETWEEN_WHITE_LINE == 0 && position != 0) {
@@ -104,6 +112,8 @@ public class DebugWorldRenderer extends Renderer{
     private void drawGridLine(int position, Color color, boolean horizontal) {
         this.debugRenderer.set(ShapeType.Line);
         this.debugRenderer.setColor(color);
+        if(horizontal)
+            System.out.println("position = " + position);
         if (horizontal) {
             this.debugRenderer.line(-GRID_MIN_POS, position, GRID_MIN_POS, position);
         } else {

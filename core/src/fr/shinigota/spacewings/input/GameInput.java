@@ -66,17 +66,8 @@ public class GameInput implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        Body playerBody = this.gameWorld.getPlayer().getBody();
         this.gameWorld.getPlayer().changeDesiredAcceleration(-amount);
-//        System.out.println(amount);
-//        System.out.println(playerBody.getPosition().y);
-//        if (amount < 0) {
-//            playerBody.applyLinearImpulse(0, 10, playerBody.getPosition().x, playerBody.getPosition().y, true);
-//        } else if (amount > 0) {
-//            playerBody.applyLinearImpulse(0, -10, playerBody.getPosition().x, playerBody.getPosition().y, true);
-//        } else  {
-//            playerBody.applyLinearImpulse(0, 0, playerBody.getPosition().x, playerBody.getPosition().y, true);
-//        }
+        this.gameWorld.getPlayer().setWake(true);
         return false;
     }
 }

@@ -8,14 +8,20 @@ import com.badlogic.gdx.physics.box2d.*;
  * Created by benjamin on 2/4/17.
  */
 public class Player extends DynamicEntity {
+    public static final float ACCELERATION_STEP = 10;
+    public static final float MAX_ACCELERATION = 100;
+    public static final float MIN_ACCELERATION = 0;
+
+    protected float desiredAngle;
+    protected float acceleration;
+
     public Player(Vector2 position, Vector2 size, World world) {
         super(position, size, world);
+        this.acceleration = 0;
     }
 
     @Override
     public void update(float delta) {
-//        this.body.setTransform(this.getPosition(), this.desiredAngle);
-
         float bodyAngle = this.body.getAngle();
 
         float nextAngle = bodyAngle + body.getAngularVelocity() / (1/delta);
@@ -26,20 +32,27 @@ public class Player extends DynamicEntity {
         float torque = body.getInertia() * desiredAngularVelocity / delta;
         body.applyTorque( torque, true );
 
+        if(this.wake) {
+            float angle = (body.getAngle() * MathUtils.radiansToDegrees);
+            Vector2 acceleration = new Vector2(0, this.acceleration);
+            acceleration.rotate(angle);
+            this.body.setLinearVelocity(acceleration);
+            this.wake = this.acceleration != 0;
+        }
+    }
 
-//        float nextAngle = bodyAngle + body.getAngularVelocity() / 1;
-//        float totalRotation = desiredAngle - nextAngle;
-//        while ( totalRotation < -180 * MathUtils.degreesToRadians ) totalRotation += 360 * MathUtils.degreesToRadians;
-//        while ( totalRotation >  180 * MathUtils.degreesToRadians ) totalRotation -= 360 * MathUtils.degreesToRadians;
-//        float desiredAngularVelocity = totalRotation * 60;
-//        float change = 1 * MathUtils.degreesToRadians; //allow 1 degree rotation per time step
-//        desiredAngularVelocity = Math.min( change, Math.max(-change, desiredAngularVelocity));
-//        float impulse = body.getInertia() * desiredAngularVelocity;
-//        body.applyAngularImpulse( impulse, true);
-        float angle = (body.getAngle() * MathUtils.radiansToDegrees);
-        Vector2 acceleration = new Vector2(0, this.acceleration);
-        acceleration.rotate(angle);
-        this.body.setLinearVelocity(acceleration);
+
+    public void changeDesiredAcceleration(float amount) {
+        if (MIN_ACCELERATION + amount * ACCELERATION_STEP < MIN_ACCELERATION)
+            this.acceleration = MIN_ACCELERATION;
+        else if (MAX_ACCELERATION + amount * ACCELERATION_STEP > MAX_ACCELERATION)
+            this.acceleration = MAX_ACCELERATION;
+        else
+            this.acceleration += amount * ACCELERATION_STEP;
+    }
+
+    public void setDesiredAngle(float desiredAngle) {
+        this.desiredAngle = desiredAngle;
     }
 
 }
