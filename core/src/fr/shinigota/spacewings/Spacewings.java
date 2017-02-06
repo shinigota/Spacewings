@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fr.shinigota.spacewings.screen.GameScreen;
 
 public class Spacewings extends Game {
+	public static final float PIXELS_TO_METERS = 1/100f;
 	public static final int DEFAULT_SCREEN_WIDTH = 1280;
 	public static final int DEFAULT_SCREEN_HEIGHT = 720;
 

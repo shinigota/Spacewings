@@ -2,7 +2,6 @@ package fr.shinigota.spacewings.renderer.world;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import fr.shinigota.spacewings.Spacewings;
 import fr.shinigota.spacewings.entity.Player;
-import fr.shinigota.spacewings.renderable.Renderable;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 import fr.shinigota.spacewings.renderer.Renderer;
 
@@ -18,14 +16,13 @@ import fr.shinigota.spacewings.renderer.Renderer;
  * Created by benjamin on 2/4/17.
  */
 public class DebugWorldRenderer extends Renderer{
-    private static final int GRID_MIN_POS = -10000;
-    private static final int GRID_MAX_POS = 10000;
-    private static final int SPACE_BETWEEN_WHITE_LINE = 100;
-    private static final int SPACE_BETWEEN_YELLOW_LINE = 500;
+    private static final float GRID_MIN_POS = -10000 * Spacewings.PIXELS_TO_METERS;
+    private static final float GRID_MAX_POS = 10000 * Spacewings.PIXELS_TO_METERS;
+    private static final float SPACE_BETWEEN_WHITE_LINE = 100 * Spacewings.PIXELS_TO_METERS;
+    private static final float SPACE_BETWEEN_YELLOW_LINE = 500 * Spacewings.PIXELS_TO_METERS;
     private final Player player;
 
     private final OrthographicCamera camera;
-    private final SpriteBatch spriteBatch;
     private final ShapeRenderer debugRenderer;
     private final Box2DDebugRenderer box2DDebugRenderer;
 
@@ -39,7 +36,6 @@ public class DebugWorldRenderer extends Renderer{
 
         this.debugRenderer = new ShapeRenderer();
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.spriteBatch = new SpriteBatch();
     }
 
     @Override
@@ -51,14 +47,11 @@ public class DebugWorldRenderer extends Renderer{
     }
 
     private void renderBox2DWorld() {
-        this.spriteBatch.setProjectionMatrix(camera.combined);
-        this.spriteBatch.begin();
-        this.box2DDebugRenderer.render(((GameWorld)this.renderable).getWorld(), camera.combined);
-        this.spriteBatch.end();
+        this.box2DDebugRenderer.render(((GameWorld)this.renderable).getWorld(), camera.combined.cpy().scl(1/Spacewings.PIXELS_TO_METERS));
     }
 
     private void renderDebug() {
-        this.debugRenderer.setProjectionMatrix(camera.combined);
+        this.debugRenderer.setProjectionMatrix(camera.combined.cpy().scl(1/Spacewings.PIXELS_TO_METERS));
         this.debugRenderer.begin(ShapeType.Line);
 
         this.drawAxis();
@@ -70,7 +63,7 @@ public class DebugWorldRenderer extends Renderer{
 
     private void renderPlayerAxis() {
         float angle = this.player.getAngle() * MathUtils.radiansToDegrees;
-        int axisLength = 50;
+        float axisLength = 50 * Spacewings.PIXELS_TO_METERS;
         Vector2 horizontal = new Vector2(axisLength, 0);
         Vector2 vertical = new Vector2(0, axisLength);
         horizontal.rotate(angle).add(this.player.getPosition());
@@ -89,22 +82,16 @@ public class DebugWorldRenderer extends Renderer{
 
     private void drawGridLines(boolean horizontal) {
 
-        int start = horizontal ? (int) (this.camera.position.y - Spacewings.DEFAULT_SCREEN_HEIGHT) : (int) (this.camera.position.x - Spacewings.DEFAULT_SCREEN_WIDTH);
-        int end = horizontal ? (int) (this.camera.position.y + Spacewings.DEFAULT_SCREEN_HEIGHT) : (int) (this.camera.position.x + Spacewings.DEFAULT_SCREEN_WIDTH);
+        float start = horizontal ? (this.camera.position.y - Spacewings.DEFAULT_SCREEN_HEIGHT) : (this.camera.position.x - Spacewings.DEFAULT_SCREEN_WIDTH);
+        float end = horizontal ? (this.camera.position.y + Spacewings.DEFAULT_SCREEN_HEIGHT) : (this.camera.position.x + Spacewings.DEFAULT_SCREEN_WIDTH);
 
         start = start - ( start % SPACE_BETWEEN_YELLOW_LINE ) ;
         end = end + ( end % SPACE_BETWEEN_YELLOW_LINE ) ;
 
-        if(horizontal) {
-            System.out.println("----");
-            System.out.println("start = " + start);
-            System.out.println("end = " + end);
-        }
-
-        for(int position = start; position < end ; position += SPACE_BETWEEN_WHITE_LINE) {
+        for(float position = start; position < end ; position += SPACE_BETWEEN_WHITE_LINE) {
             if (position % SPACE_BETWEEN_WHITE_LINE == 0 && position != 0) {
                 Color color = position % SPACE_BETWEEN_YELLOW_LINE == 0 ? Color.YELLOW : Color.WHITE;
-                drawGridLine(position, color, horizontal);
+                drawGridLine((int) position, color, horizontal);
             }
         }
     }
@@ -112,8 +99,6 @@ public class DebugWorldRenderer extends Renderer{
     private void drawGridLine(int position, Color color, boolean horizontal) {
         this.debugRenderer.set(ShapeType.Line);
         this.debugRenderer.setColor(color);
-        if(horizontal)
-            System.out.println("position = " + position);
         if (horizontal) {
             this.debugRenderer.line(-GRID_MIN_POS, position, GRID_MIN_POS, position);
         } else {
@@ -139,7 +124,7 @@ public class DebugWorldRenderer extends Renderer{
     }
 
     private void updateCamPosition() {
-        this.camera.position.set(this.player.getPosition(), 0);
+        this.camera.position.set(this.player.getPosition().cpy().scl(1/Spacewings.PIXELS_TO_METERS), 0);
         this.camera.update();
     }
 }

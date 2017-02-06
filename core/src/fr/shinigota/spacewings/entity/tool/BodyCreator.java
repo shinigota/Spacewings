@@ -1,4 +1,4 @@
-package fr.shinigota.spacewings.entity;
+package fr.shinigota.spacewings.entity.tool;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -28,9 +28,9 @@ public class BodyCreator {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-//        fixtureDef.density = 0.01f;
-//        fixtureDef.friction = 0.0f;
-//        fixtureDef.restitution = 0.6f;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
+        fixtureDef.restitution = 0.5f;
 
         Fixture fixture = body.createFixture(fixtureDef);
         shape.dispose();

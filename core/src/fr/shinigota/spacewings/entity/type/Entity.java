@@ -1,13 +1,13 @@
-package fr.shinigota.spacewings.entity;
+package fr.shinigota.spacewings.entity.type;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import fr.shinigota.spacewings.entity.tool.BodyCreator;
 
 /**
  * Created by benjamin on 2/5/17.
  */
-public class Entity {
+public abstract class Entity {
     protected final Body body;
 
     public Entity(Vector2 position, Vector2 size, World world, BodyDef.BodyType bodyType) {

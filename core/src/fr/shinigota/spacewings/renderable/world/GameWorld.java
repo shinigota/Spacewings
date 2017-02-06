@@ -3,10 +3,9 @@ package fr.shinigota.spacewings.renderable.world;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.entity.DynamicEntity;
-import fr.shinigota.spacewings.entity.Player;
-import fr.shinigota.spacewings.entity.Prop;
-import fr.shinigota.spacewings.entity.StaticEntity;
+import fr.shinigota.spacewings.entity.*;
+import fr.shinigota.spacewings.entity.tool.UnscaledVector2;
+import fr.shinigota.spacewings.entity.type.StaticEntity;
 import fr.shinigota.spacewings.renderable.Renderable;
 
 
@@ -23,9 +22,9 @@ public class GameWorld extends Renderable {
     public GameWorld(Spacewings spacewings) {
         super(spacewings);
         this.world = new World(new Vector2(0, 0), true);
-        this.staticEntity = new StaticEntity(new Vector2(0, -100), new Vector2(500,50), this.world);
-        this.prop= new Prop(new Vector2(0, 50), new Vector2(100, 100), this.world);
-        this.player = new Player(new Vector2(70, 300), new Vector2(50, 50), this.world);
+        this.staticEntity = new StaticEntity(new UnscaledVector2(0, -100), new UnscaledVector2(500,50), this.world);
+        this.prop= new Prop(new UnscaledVector2(0, 50), new UnscaledVector2(100, 100), this.world);
+        this.player = new Player(new UnscaledVector2(70, 300), new UnscaledVector2(50, 50), this.world);
     }
 
     @Override
