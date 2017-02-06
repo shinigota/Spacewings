@@ -1,7 +1,7 @@
 # Table of contents
 1. [Spacewings](#spacewings)
 2. [Required](#required)
-3. [Building and running](#building and running)
+3. [Building-and-running](#building and running)
 4. I like table of contents
 
 # Spacewings
