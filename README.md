@@ -1,3 +1,9 @@
+# Table of contents
+1. [Spacewings](#spacewings)
+2. [Required](#required)
+3. [Building and running](#building and running)
+4. I like table of contents
+
 # Spacewings
 Spacewings is a - currently in progress - spaceshooter which should be about exploding spaceships, earning a crapload of money to make your ship a beast and destroy even more some of those bad guys to have even more cash then you have some weird ship insanely powerful so you're getting bored and it's not funny anymore and you stop the game.
 
