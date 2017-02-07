@@ -60,6 +60,7 @@ public class GameInput implements InputProcessor {
         Vector2 toTarget = target.cpy().sub(player.getPosition());
         float angle = MathUtils.atan2(-toTarget.x, toTarget.y);
         this.gameWorld.getPlayer().setDesiredAngle(angle);
+        this.gameWorld.getPlayer().setWake(true);
 
         return false;
     }
