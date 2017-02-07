@@ -3,6 +3,7 @@ package fr.shinigota.spacewings.entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 
 /**
@@ -17,8 +18,13 @@ public class Player extends DynamicEntity {
     protected float acceleration;
 
     public Player(Vector2 position, Vector2 size, World world) {
-        super(position, size, world);
+        super(world, position, size);
         this.acceleration = 0;
+    }
+
+    @Override
+    public FixtureDef generateFixtureDef() {
+        return FixtureType.LIGHT.fixtureDef;
     }
 
     @Override
@@ -35,10 +41,11 @@ public class Player extends DynamicEntity {
 
         if(this.wake) {
             float angle = (body.getAngle() * MathUtils.radiansToDegrees);
-            Vector2 acceleration = new Vector2(0, this.acceleration);
-            acceleration.rotate(angle);
-
-            this.body.setLinearVelocity(acceleration);
+            Vector2 desiredVelocity = new Vector2(0, this.acceleration);
+            desiredVelocity.rotate(angle);
+            Vector2 currentVelocity = this.body.getLinearVelocity();
+            Vector2 force = desiredVelocity.cpy().sub(currentVelocity).scl(this.body.getMass()).cpy().scl(1/delta);
+            body.applyForce(force, this.body.getWorldCenter(), true);
             this.wake = this.acceleration != 0;
         }
     }

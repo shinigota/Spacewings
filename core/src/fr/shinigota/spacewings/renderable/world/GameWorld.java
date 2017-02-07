@@ -15,7 +15,8 @@ import fr.shinigota.spacewings.renderable.Renderable;
 public class GameWorld extends Renderable {
     private final World world;
     private final StaticEntity staticEntity;
-    private final Prop prop;
+    private final HeavyProp heavyProp;
+    private final LightProp lightProp;
 
     private Player player;
 
@@ -23,7 +24,8 @@ public class GameWorld extends Renderable {
         super(spacewings);
         this.world = new World(new Vector2(0, 0), true);
         this.staticEntity = new StaticEntity(new UnscaledVector2(0, -100), new UnscaledVector2(500,50), this.world);
-        this.prop= new Prop(new UnscaledVector2(0, 50), new UnscaledVector2(100, 100), this.world);
+        this.heavyProp = new HeavyProp(new UnscaledVector2(0, 47), new UnscaledVector2(300, 100), this.world);
+        this.lightProp = new LightProp(new UnscaledVector2(32, 120), new UnscaledVector2(25, 25), this.world);
         this.player = new Player(new UnscaledVector2(70, 300), new UnscaledVector2(50, 50), this.world);
     }
 
@@ -31,7 +33,6 @@ public class GameWorld extends Renderable {
     public void update(float delta) {
         world.step(1f/60f, 6, 2);
         this.player.update(delta);
-//        this.entity.update(delta);
     }
 
     public void dispose() {

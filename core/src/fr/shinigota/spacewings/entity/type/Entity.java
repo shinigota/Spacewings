@@ -2,7 +2,6 @@ package fr.shinigota.spacewings.entity.type;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import fr.shinigota.spacewings.entity.tool.BodyCreator;
 
 /**
  * Created by benjamin on 2/5/17.
@@ -10,9 +9,13 @@ import fr.shinigota.spacewings.entity.tool.BodyCreator;
 public abstract class Entity {
     protected final Body body;
 
-    public Entity(Vector2 position, Vector2 size, World world, BodyDef.BodyType bodyType) {
-        this.body = BodyCreator.createBody(world, position, size, bodyType);
+    public Entity(World world, Vector2 position, Vector2 size) {
+        this.body = this.generateBody(world, position,  size);
     }
+
+    protected abstract FixtureDef generateFixtureDef();
+
+    protected abstract Body generateBody(World world, Vector2 position, Vector2 size);
 
     public Body getBody() {
         return body;
