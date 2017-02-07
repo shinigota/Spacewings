@@ -11,6 +11,10 @@ public abstract class Entity {
 
     public Entity(World world, Vector2 position, Vector2 size) {
         this.body = this.generateBody(world, position,  size);
+        if (this instanceof LivingEntity) {
+            LivingEntity self = (LivingEntity) this;
+            this.body.setUserData(self.initData());
+        }
     }
 
     protected abstract FixtureDef generateFixtureDef();
@@ -28,4 +32,6 @@ public abstract class Entity {
     public float getAngle() {
         return this.body.getAngle();
     }
+
+
 }
