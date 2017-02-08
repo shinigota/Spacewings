@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/shinigota/Spacewings/badges/gpa.svg)](https://codeclimate.com/github/shinigota/Spacewings)
+
 # Table of contents
 1. [Spacewings](#spacewings)
 2. [Required](#required)
