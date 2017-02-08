@@ -1,18 +1,17 @@
 package fr.shinigota.spacewings.entity;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
+import fr.shinigota.spacewings.entity.tool.ArrayTools;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
-import fr.shinigota.spacewings.entity.type.LivingEntity;
-import fr.shinigota.spacewings.entity.userdata.LivingEntityData;
+import fr.shinigota.spacewings.entity.behavior.Collidable;
+import fr.shinigota.spacewings.entity.data.CollidableData;
+import fr.shinigota.spacewings.renderable.world.GameWorld;
 
 /**
  * Created by Benjamin on 07/02/2017.
  */
-public class LightProp extends DynamicEntity implements LivingEntity {
+public class LightProp extends DynamicEntity implements Collidable {
     public LightProp(Vector2 position, Vector2 size, World world) {
         super(world, position, size);
     }
@@ -32,12 +31,20 @@ public class LightProp extends DynamicEntity implements LivingEntity {
     }
 
     @Override
-    public LivingEntityData initData() {
-        return new LivingEntityData(1f, 1f, 100);
+    public CollidableData getData() {
+        return new CollidableData(0.045f, 0.05f, 100);
     }
 
     @Override
-    public void onCollision() {
+    public void onCollision(Fixture fixture, ContactImpulse impulse, GameWorld gameWorld) {
+        float normalImpulses = ArrayTools.sum(impulse.getNormalImpulses());
+        float tangentImpulses = ArrayTools.sum(impulse.getTangentImpulses());
 
+        CollidableData data = this.getData();
+        if (data.normalResistance < normalImpulses || data.tangentResistance < tangentImpulses) {
+            gameWorld.addFixtureToDestroy(fixture);
+            if (this.getBody().getFixtureList().size - 1 <= 0)
+                gameWorld.addBodyToDestroy(this.body);
+        }
     }
 }

@@ -28,7 +28,7 @@ public class Player extends DynamicEntity {
 
     @Override
     public FixtureDef generateFixtureDef() {
-        return FixtureType.LIGHT.fixtureDef;
+        return FixtureType.MODERATE.fixtureDef;
     }
 
     @Override

@@ -2,6 +2,7 @@ package fr.shinigota.spacewings.entity.type;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import fr.shinigota.spacewings.entity.behavior.Collidable;
 
 /**
  * Created by benjamin on 2/5/17.
@@ -11,10 +12,7 @@ public abstract class Entity {
 
     public Entity(World world, Vector2 position, Vector2 size) {
         this.body = this.generateBody(world, position,  size);
-        if (this instanceof LivingEntity) {
-            LivingEntity self = (LivingEntity) this;
-            this.body.setUserData(self.initData());
-        }
+        this.body.setUserData(this);
     }
 
     protected abstract FixtureDef generateFixtureDef();

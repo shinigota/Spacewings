@@ -3,7 +3,7 @@ package fr.shinigota.spacewings.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.input.GameInput;
+import fr.shinigota.spacewings.controller.GameInput;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 import fr.shinigota.spacewings.renderer.world.DebugWorldRenderer;
 import fr.shinigota.spacewings.renderer.world.GameWorldRenderer;
@@ -60,6 +60,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        this.gameWorld.dispose();
         this.gameWorldRenderer.dispose();
         this.debugWorldRenderer.dispose();
     }

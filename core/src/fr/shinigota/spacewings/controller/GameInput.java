@@ -1,9 +1,8 @@
-package fr.shinigota.spacewings.input;
+package fr.shinigota.spacewings.controller;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import fr.shinigota.spacewings.Spacewings;
 import fr.shinigota.spacewings.entity.Player;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
