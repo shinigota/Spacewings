@@ -11,4 +11,5 @@ import fr.shinigota.spacewings.renderable.world.GameWorld;
 public interface Collidable {
     CollidableData getData();
     void onCollision(Fixture fixture, ContactImpulse impulse, GameWorld gameWorld);
+    float initHealth();
 }

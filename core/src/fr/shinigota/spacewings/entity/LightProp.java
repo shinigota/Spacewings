@@ -1,11 +1,14 @@
 package fr.shinigota.spacewings.entity;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import fr.shinigota.spacewings.entity.tool.ArrayTools;
-import fr.shinigota.spacewings.entity.type.DynamicEntity;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.behavior.Collidable;
 import fr.shinigota.spacewings.entity.data.CollidableData;
+import fr.shinigota.spacewings.entity.tool.ArrayTools;
+import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 
 /**
@@ -40,11 +43,16 @@ public class LightProp extends DynamicEntity implements Collidable {
         float normalImpulses = ArrayTools.sum(impulse.getNormalImpulses());
         float tangentImpulses = ArrayTools.sum(impulse.getTangentImpulses());
 
-        CollidableData data = this.getData();
-        if (data.normalResistance < normalImpulses || data.tangentResistance < tangentImpulses) {
+        this.damage(normalImpulses * 100);
+        this.damage(tangentImpulses * 100);
+        if (this.isDead()) {
             gameWorld.addFixtureToDestroy(fixture);
-            if (this.getBody().getFixtureList().size - 1 <= 0)
-                gameWorld.addBodyToDestroy(this.body);
+            gameWorld.addBodyToDestroy(this.body);
         }
+    }
+
+    @Override
+    public float initHealth() {
+        return 50;
     }
 }

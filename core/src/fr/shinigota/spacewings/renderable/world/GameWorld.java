@@ -1,10 +1,14 @@
 package fr.shinigota.spacewings.renderable.world;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.entity.*;
+import fr.shinigota.spacewings.entity.HeavyProp;
+import fr.shinigota.spacewings.entity.LightProp;
+import fr.shinigota.spacewings.entity.Player;
 import fr.shinigota.spacewings.entity.tool.UnscaledVector2;
 import fr.shinigota.spacewings.entity.tool.WorldContactListener;
 import fr.shinigota.spacewings.entity.type.StaticEntity;

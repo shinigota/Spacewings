@@ -1,7 +1,6 @@
 package fr.shinigota.spacewings.renderable;
 
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.renderer.Renderer;
 
 
 /**

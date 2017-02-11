@@ -81,23 +81,22 @@ public class DebugWorldRenderer extends Renderer{
     }
 
     private void drawGridLines(boolean horizontal) {
-
-        float start = horizontal ? (this.camera.position.y - Spacewings.DEFAULT_SCREEN_HEIGHT - SPACE_BETWEEN_YELLOW_LINE)
-                : (this.camera.position.x - Spacewings.DEFAULT_SCREEN_WIDTH - SPACE_BETWEEN_YELLOW_LINE);
+        float start = horizontal ? (this.camera.position.y * Spacewings.PIXELS_TO_METERS - Spacewings.DEFAULT_SCREEN_HEIGHT * Spacewings.PIXELS_TO_METERS - SPACE_BETWEEN_YELLOW_LINE)
+                : (this.camera.position.x * Spacewings.PIXELS_TO_METERS - Spacewings.DEFAULT_SCREEN_WIDTH * Spacewings.PIXELS_TO_METERS - 2*SPACE_BETWEEN_YELLOW_LINE);
         float end = horizontal ? (this.camera.position.y + Spacewings.DEFAULT_SCREEN_HEIGHT + SPACE_BETWEEN_YELLOW_LINE)
-                : (this.camera.position.x + Spacewings.DEFAULT_SCREEN_WIDTH + SPACE_BETWEEN_YELLOW_LINE);
+                : (this.camera.position.x * Spacewings.PIXELS_TO_METERS + Spacewings.DEFAULT_SCREEN_WIDTH * Spacewings.PIXELS_TO_METERS + 2*SPACE_BETWEEN_YELLOW_LINE);
 
         start = start - ( start % SPACE_BETWEEN_YELLOW_LINE ) ;
         end = end + ( end % SPACE_BETWEEN_YELLOW_LINE ) ;
         for(float position = start; position < end ; position += SPACE_BETWEEN_WHITE_LINE) {
             if (position % SPACE_BETWEEN_WHITE_LINE == 0 && position != 0) {
                 Color color = position % SPACE_BETWEEN_YELLOW_LINE == 0 ? Color.YELLOW : Color.WHITE;
-                drawGridLine((int) position, color, horizontal);
+                drawGridLine(position, color, horizontal);
             }
         }
     }
 
-    private void drawGridLine(int position, Color color, boolean horizontal) {
+    private void drawGridLine(float position, Color color, boolean horizontal) {
         this.debugRenderer.set(ShapeType.Line);
         this.debugRenderer.setColor(color);
         if (horizontal) {
