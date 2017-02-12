@@ -19,6 +19,10 @@ public abstract class Entity {
         this.health = this instanceof Collidable ? ((Collidable)this).initHealth() : 0;
     }
 
+    protected void addEntityFixture(Entity entity) {
+
+    }
+
     protected abstract FixtureDef generateFixtureDef();
 
     protected abstract Body generateBody(World world, Vector2 position, Vector2 size);

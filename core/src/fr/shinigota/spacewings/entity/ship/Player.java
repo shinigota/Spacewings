@@ -1,11 +1,13 @@
-package fr.shinigota.spacewings.entity;
+package fr.shinigota.spacewings.entity.ship;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
+import fr.shinigota.spacewings.fixture.Turret;
 
 /**
  * Created by benjamin on 2/4/17.
@@ -23,9 +25,18 @@ public class Player extends DynamicEntity {
     protected float desiredAngle;
     protected float acceleration;
 
+    private Array<Turret> turrets;
+    private boolean shooting;
+
     public Player(Vector2 position, Vector2 size, World world) {
         super(world, position, size);
         this.acceleration = 0;
+        this.turrets = new Array<Turret>(1);
+        this.addShipFixture(new Turret(this));
+    }
+
+    private void addShipFixture(Turret turret) {
+        this.turrets.add(turret);
     }
 
     @Override
@@ -41,6 +52,10 @@ public class Player extends DynamicEntity {
             this.updateSpeed(delta);
 
             this.wake = this.isValidVelocity(delta) || this.isValidAngle();
+        }
+
+        if (this.shooting) {
+            this.shoot();
         }
     }
 
@@ -96,5 +111,16 @@ public class Player extends DynamicEntity {
         float angle = Math.abs((this.getAngle() * MathUtils.radiansToDegrees) % 360);
         float desiredAngleDeg = Math.abs((this.desiredAngle * MathUtils.radiansToDegrees) % 360);
         return ! (desiredAngleDeg - DESIRED_ANGLE_CHECK_MARGIN <= angle && angle <= desiredAngleDeg + DESIRED_ANGLE_CHECK_MARGIN);
+    }
+
+    public void shoot() {
+        for (Turret turret : this.turrets) {
+            if (turret.canShoot())
+                turret.shoot();
+        }
+    }
+
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
     }
 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import fr.shinigota.spacewings.Spacewings;
 import fr.shinigota.spacewings.entity.HeavyProp;
 import fr.shinigota.spacewings.entity.LightProp;
-import fr.shinigota.spacewings.entity.Player;
+import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.entity.tool.UnscaledVector2;
 import fr.shinigota.spacewings.entity.tool.WorldContactListener;
 import fr.shinigota.spacewings.entity.type.StaticEntity;

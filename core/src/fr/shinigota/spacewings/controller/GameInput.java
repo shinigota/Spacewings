@@ -4,7 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.entity.Player;
+import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 import fr.shinigota.spacewings.renderer.world.GameWorldRenderer;
 
@@ -39,12 +39,16 @@ public class GameInput implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        Player player = this.gameWorld.getPlayer();
+        player.setShooting(true);
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        Player player = this.gameWorld.getPlayer();
+        player.setShooting(false);
+        return true;
     }
 
     @Override
@@ -61,13 +65,13 @@ public class GameInput implements InputProcessor {
         this.gameWorld.getPlayer().setDesiredAngle(angle);
         this.gameWorld.getPlayer().setWake(true);
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean scrolled(int amount) {
         this.gameWorld.getPlayer().changeDesiredAcceleration(-amount);
         this.gameWorld.getPlayer().setWake(true);
-        return false;
+        return true;
     }
 }

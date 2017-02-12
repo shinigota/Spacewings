@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.entity.Player;
+import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 import fr.shinigota.spacewings.renderer.Renderer;
 

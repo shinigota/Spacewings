@@ -35,7 +35,7 @@ public class LightProp extends DynamicEntity implements Collidable {
 
     @Override
     public CollidableData getData() {
-        return new CollidableData(0.045f, 0.05f, 100);
+        return new CollidableData(0.045f, 0.05f);
     }
 
     @Override

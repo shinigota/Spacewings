@@ -6,11 +6,9 @@ package fr.shinigota.spacewings.entity.data;
 public class CollidableData {
     public float normalResistance;
     public float tangentResistance;
-    public int health;
 
-    public CollidableData(float normalResistance, float tangentResistance, int health) {
+    public CollidableData(float normalResistance, float tangentResistance) {
         this.normalResistance = normalResistance;
         this.tangentResistance = tangentResistance;
-        this.health = health;
     }
 }
