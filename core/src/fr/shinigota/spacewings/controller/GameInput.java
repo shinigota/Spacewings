@@ -53,17 +53,14 @@ public class GameInput implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        handlePlayerRotation(screenX, screenY);
+
+        return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Player player = this.gameWorld.getPlayer();
-        Vector2 target = this.gameWorldRenderer.unproject(new Vector2(screenX, screenY));
-        Vector2 toTarget = target.cpy().sub(player.getPosition());
-        float angle = MathUtils.atan2(-toTarget.x, toTarget.y);
-        this.gameWorld.getPlayer().setDesiredAngle(angle);
-        this.gameWorld.getPlayer().setWake(true);
+        handlePlayerRotation(screenX, screenY);
 
         return true;
     }
@@ -73,5 +70,14 @@ public class GameInput implements InputProcessor {
         this.gameWorld.getPlayer().changeDesiredAcceleration(-amount);
         this.gameWorld.getPlayer().setWake(true);
         return true;
+    }
+
+    private void handlePlayerRotation(int screenX, int screenY) {
+        Player player = this.gameWorld.getPlayer();
+        Vector2 target = this.gameWorldRenderer.unproject(new Vector2(screenX, screenY));
+        Vector2 toTarget = target.cpy().sub(player.getPosition());
+        float angle = MathUtils.atan2(-toTarget.x, toTarget.y);
+        this.gameWorld.getPlayer().setDesiredAngle(angle);
+        this.gameWorld.getPlayer().setWake(true);
     }
 }

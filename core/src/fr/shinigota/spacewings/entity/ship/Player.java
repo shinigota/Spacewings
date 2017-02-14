@@ -29,7 +29,7 @@ public class Player extends DynamicEntity {
     private boolean shooting;
 
     public Player(Vector2 position, Vector2 size, World world) {
-        super(world, position, size);
+        super(world, position, size, false);
         this.acceleration = 0;
         this.turrets = new Array<Turret>(1);
         this.addShipFixture(new Turret(this));

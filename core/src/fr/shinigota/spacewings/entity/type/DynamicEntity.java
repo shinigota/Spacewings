@@ -11,14 +11,14 @@ import fr.shinigota.spacewings.entity.tool.BodyCreator;
 public abstract class DynamicEntity extends Entity {
     protected boolean wake;
 
-    public DynamicEntity(World world, Vector2 position, Vector2 size) {
-        super(world, position, size);
+    public DynamicEntity(World world, Vector2 position, Vector2 size, boolean sensor) {
+        super(world, position, size, sensor);
         this.wake = false;
     }
 
     @Override
-    protected Body generateBody(World world, Vector2 position, Vector2 size) {
-        return BodyCreator.createDynamicBody(world, this.generateFixtureDef(), position, size);
+    protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
+        return BodyCreator.createDynamicBody(world, this.generateFixtureDef(), position, size, sensor);
     }
 
     public abstract void update(float delta);

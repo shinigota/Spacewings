@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  * Created by benjamin on 2/5/17.
  */
 public class BodyCreator {
-    public static Body createStaticBody(World world, FixtureDef fixtureDef, Vector2 position, Vector2 size) {
+    public static Body createStaticBody(World world, FixtureDef fixtureDef, Vector2 position, Vector2 size, boolean sensor) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(position);
@@ -18,6 +18,7 @@ public class BodyCreator {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(size.x/2, size.y/2);
         fixtureDef.shape = shape;
+        fixtureDef.isSensor = sensor;
 
         Fixture fixture = body.createFixture(fixtureDef);
         shape.dispose();
@@ -25,21 +26,21 @@ public class BodyCreator {
         return body;
     }
 
-    public static Body createDynamicBody(World world, FixtureDef fixtureDef, Vector2 position, Vector2 size) {
+    public static Body createDynamicBody(World world, FixtureDef fixtureDef, Vector2 position, Vector2 size, boolean sensor) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.position.set(position);
-
         Body body = world.createBody(bodyDef);
-
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(size.x/2, size.y/2);
         fixtureDef.shape = shape;
+        fixtureDef.isSensor = sensor;
 
         Fixture fixture = body.createFixture(fixtureDef);
-
-        body.setLinearDamping(body.getMass() * 20f);
-        body.setAngularDamping(body.getMass() * 20f);
+        if (fixtureDef.density != 0) {
+            body.setLinearDamping(body.getMass() * 20f);
+            body.setAngularDamping(body.getMass() * 20f);
+        }
         shape.dispose();
 
         return body;

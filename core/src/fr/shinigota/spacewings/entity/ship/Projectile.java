@@ -1,10 +1,8 @@
 package fr.shinigota.spacewings.entity.ship;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import fr.shinigota.spacewings.entity.behavior.Collidable;
 import fr.shinigota.spacewings.entity.data.CollidableData;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
@@ -17,7 +15,8 @@ import fr.shinigota.spacewings.renderable.world.GameWorld;
 public class Projectile extends DynamicEntity implements Collidable {
     private static float SPEED = 10;
     public Projectile(World world, Vector2 position, Vector2 size, Vector2 direction) {
-        super(world, position, size);
+        super(world, position, size, true);
+        this.body.setTransform(this.body.getPosition(), (direction.angle() - 90) * MathUtils.degreesToRadians);
         this.body.applyLinearImpulse(direction.scl(SPEED), this.body.getWorldCenter(), true);
     }
 
@@ -28,6 +27,7 @@ public class Projectile extends DynamicEntity implements Collidable {
 
     @Override
     public void onCollision(Fixture fixture, ContactImpulse impulse, GameWorld gameWorld) {
+        System.out.println("Projectile.onCollision");
         gameWorld.addFixtureToDestroy(fixture);
         gameWorld.addBodyToDestroy(this.body);
     }

@@ -16,7 +16,7 @@ import fr.shinigota.spacewings.renderable.world.GameWorld;
  */
 public class LightProp extends DynamicEntity implements Collidable {
     public LightProp(Vector2 position, Vector2 size, World world) {
-        super(world, position, size);
+        super(world, position, size, false);
     }
 
     @Override

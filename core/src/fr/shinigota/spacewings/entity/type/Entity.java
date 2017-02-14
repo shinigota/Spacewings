@@ -13,8 +13,8 @@ public abstract class Entity {
     protected final Body body;
     protected float health;
 
-    public Entity(World world, Vector2 position, Vector2 size) {
-        this.body = this.generateBody(world, position,  size);
+    public Entity(World world, Vector2 position, Vector2 size, boolean sensor) {
+        this.body = this.generateBody(world, position,  size, sensor);
         this.body.setUserData(this);
         this.health = this instanceof Collidable ? ((Collidable)this).initHealth() : 0;
     }
@@ -25,7 +25,7 @@ public abstract class Entity {
 
     protected abstract FixtureDef generateFixtureDef();
 
-    protected abstract Body generateBody(World world, Vector2 position, Vector2 size);
+    protected abstract Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor);
 
     public Body getBody() {
         return body;

@@ -11,7 +11,7 @@ import fr.shinigota.spacewings.entity.type.DynamicEntity;
  */
 public class HeavyProp extends DynamicEntity {
     public HeavyProp(Vector2 position, Vector2 size, World world) {
-        super(world, position, size);
+        super(world, position, size, false);
     }
 
     @Override
