@@ -2,9 +2,12 @@ package fr.shinigota.spacewings.entity.ship;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import fr.shinigota.spacewings.entity.tool.BodyCreator;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.fixture.Turret;
@@ -13,6 +16,7 @@ import fr.shinigota.spacewings.fixture.Turret;
  * Created by benjamin on 2/4/17.
  */
 public class Player extends DynamicEntity {
+    public static final short COLLISION_CATEGORY = 0x4888;
     public static final float ACCELERATION_STEP_FACTOR = 0.2f;
     public static final float MAX_ACCELERATION_FACTOR = 2f;
     public static final float MIN_ACCELERATION_FACTOR = 0;
@@ -122,5 +126,10 @@ public class Player extends DynamicEntity {
 
     public void setShooting(boolean shooting) {
         this.shooting = shooting;
+    }
+
+    @Override
+    protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
+        return BodyCreator.squareBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, Player.COLLISION_CATEGORY, (short) 0x0001);
     }
 }

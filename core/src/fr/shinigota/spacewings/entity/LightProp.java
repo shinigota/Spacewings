@@ -40,6 +40,9 @@ public class LightProp extends DynamicEntity implements Collidable {
 
     @Override
     public void onCollision(Fixture fixture, ContactImpulse impulse, GameWorld gameWorld) {
+        if (impulse == null)
+            return;
+
         float normalImpulses = ArrayTools.sum(impulse.getNormalImpulses());
         float tangentImpulses = ArrayTools.sum(impulse.getTangentImpulses());
 

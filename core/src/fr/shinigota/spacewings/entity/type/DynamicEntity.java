@@ -2,6 +2,7 @@ package fr.shinigota.spacewings.entity.type;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.*;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.tool.BodyCreator;
 
@@ -18,7 +19,7 @@ public abstract class DynamicEntity extends Entity {
 
     @Override
     protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.createDynamicBody(world, this.generateFixtureDef(), position, size, sensor);
+        return BodyCreator.squareBody(world, BodyType.DynamicBody, this.generateFixtureDef(), position, size);
     }
 
     public abstract void update(float delta);

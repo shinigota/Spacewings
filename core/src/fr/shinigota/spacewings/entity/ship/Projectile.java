@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fr.shinigota.spacewings.entity.behavior.Collidable;
 import fr.shinigota.spacewings.entity.data.CollidableData;
+import fr.shinigota.spacewings.entity.tool.BodyCreator;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
@@ -13,6 +14,8 @@ import fr.shinigota.spacewings.renderable.world.GameWorld;
  * Created by benjamin on 2/11/17.
  */
 public class Projectile extends DynamicEntity implements Collidable {
+    public final static short COLLISION_MASK = Short.reverseBytes(Player.COLLISION_CATEGORY);
+    public final static short COLLISION_CATEGORY = 0x0002;
     private static float SPEED = 10;
     public Projectile(World world, Vector2 position, Vector2 size, Vector2 direction) {
         super(world, position, size, true);
@@ -39,7 +42,12 @@ public class Projectile extends DynamicEntity implements Collidable {
 
     @Override
     protected FixtureDef generateFixtureDef() {
-        return FixtureType.ZERO.fixtureDef;
+        return FixtureType.PROJECTILE.fixtureDef;
+    }
+
+    @Override
+    protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
+        return BodyCreator.squareBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, COLLISION_CATEGORY, (short) 0x0001);
     }
 
     @Override

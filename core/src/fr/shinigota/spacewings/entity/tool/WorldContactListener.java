@@ -3,6 +3,7 @@ package fr.shinigota.spacewings.entity.tool;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import fr.shinigota.spacewings.entity.behavior.Collidable;
+import fr.shinigota.spacewings.entity.ship.Projectile;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 
 /**
@@ -26,7 +27,10 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-
+//        if (contact.getFixtureA().getUserData() instanceof Projectile || contact.getFixtureB().getUserData() instanceof Projectile) {
+            performCollisionAction(null, contact.getFixtureB());
+            performCollisionAction(null, contact.getFixtureA());
+//        }
     }
 
     @Override
