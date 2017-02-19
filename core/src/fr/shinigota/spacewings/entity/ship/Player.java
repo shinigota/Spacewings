@@ -11,12 +11,13 @@ import fr.shinigota.spacewings.entity.tool.BodyCreator;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.fixture.Turret;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/4/17.
  */
 public class Player extends DynamicEntity {
-    public static final short COLLISION_CATEGORY = 0x4888;
+    public static final short COLLISION_CATEGORY = -1;
     public static final float ACCELERATION_STEP_FACTOR = 0.2f;
     public static final float MAX_ACCELERATION_FACTOR = 2f;
     public static final float MIN_ACCELERATION_FACTOR = 0;
@@ -32,8 +33,8 @@ public class Player extends DynamicEntity {
     private Array<Turret> turrets;
     private boolean shooting;
 
-    public Player(Vector2 position, Vector2 size, World world) {
-        super(world, position, size, false);
+    public Player(EntityManager entityManager, Vector2 position, Vector2 size, World world) {
+        super(entityManager, world, position, size, false);
         this.acceleration = 0;
         this.turrets = new Array<Turret>(1);
         this.addShipFixture(new Turret(this));
@@ -120,7 +121,7 @@ public class Player extends DynamicEntity {
     public void shoot() {
         for (Turret turret : this.turrets) {
             if (turret.canShoot())
-                turret.shoot();
+                turret.shoot(this.entityManager);
         }
     }
 
@@ -130,6 +131,6 @@ public class Player extends DynamicEntity {
 
     @Override
     protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.squareBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, Player.COLLISION_CATEGORY, (short) 0x0001);
+        return BodyCreator.rectangleBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, Player.COLLISION_CATEGORY, (short) 0x0001);
     }
 }

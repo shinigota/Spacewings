@@ -9,6 +9,7 @@ import fr.shinigota.spacewings.Spacewings;
 import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.entity.ship.Projectile;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/11/17.
@@ -39,11 +40,11 @@ public class Turret {
         return TimeUtils.millis() >= RATE_OF_FIRE + lastShootTime;
     }
 
-    public Projectile shoot() {
+    public Projectile shoot(EntityManager entityManager) {
         this.lastShootTime = TimeUtils.millis();
         float angle = this.player.getBody().getAngle() * MathUtils.radiansToDegrees;
         Vector2 direction = Vector2.Y.cpy().rotate(angle);
         Vector2 projectileOrigin = relativePosition.cpy().rotate(player.getAngle() * MathUtils.radiansToDegrees).add(player.getPosition());
-        return new Projectile(this.player.getBody().getWorld(), projectileOrigin, new Vector2(5*Spacewings.PIXELS_TO_METERS, 10*Spacewings.PIXELS_TO_METERS), direction);
+        return new Projectile(entityManager, this.player.getBody().getWorld(), projectileOrigin, new Vector2(5*Spacewings.PIXELS_TO_METERS, 10*Spacewings.PIXELS_TO_METERS), direction);
     }
 }

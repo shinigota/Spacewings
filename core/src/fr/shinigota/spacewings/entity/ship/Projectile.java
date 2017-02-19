@@ -8,37 +8,28 @@ import fr.shinigota.spacewings.entity.data.CollidableData;
 import fr.shinigota.spacewings.entity.tool.BodyCreator;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
-import fr.shinigota.spacewings.renderable.world.GameWorld;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/11/17.
  */
-public class Projectile extends DynamicEntity implements Collidable {
-    public final static short COLLISION_MASK = Short.reverseBytes(Player.COLLISION_CATEGORY);
-    public final static short COLLISION_CATEGORY = 0x0002;
-    private static float SPEED = 10;
-    public Projectile(World world, Vector2 position, Vector2 size, Vector2 direction) {
-        super(world, position, size, true);
+public class Projectile extends DynamicEntity implements RayCastCallback{
+    public final static short COLLISION_MASK = -1;
+//    public final static short COLLISION_CATEGORY = 0x0002;
+    private static float SPEED = 30;
+    public Projectile(EntityManager entityManager, World world, Vector2 position, Vector2 size, Vector2 direction) {
+        super(entityManager, world, position, size, true);
+
         this.body.setTransform(this.body.getPosition(), (direction.angle() - 90) * MathUtils.degreesToRadians);
         this.body.applyLinearImpulse(direction.scl(SPEED), this.body.getWorldCenter(), true);
     }
 
-    @Override
-    public CollidableData getData() {
-        return new CollidableData(0, 0);
+
+    public void onCollision(Fixture fixture, ContactImpulse impulse) {
+        this.entityManager.addFixtureToDestroy(fixture);
+        this.entityManager.addBodyToDestroy(this.body);
     }
 
-    @Override
-    public void onCollision(Fixture fixture, ContactImpulse impulse, GameWorld gameWorld) {
-        System.out.println("Projectile.onCollision");
-        gameWorld.addFixtureToDestroy(fixture);
-        gameWorld.addBodyToDestroy(this.body);
-    }
-
-    @Override
-    public float initHealth() {
-        return 0;
-    }
 
     @Override
     protected FixtureDef generateFixtureDef() {
@@ -47,11 +38,24 @@ public class Projectile extends DynamicEntity implements Collidable {
 
     @Override
     protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.squareBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, COLLISION_CATEGORY, (short) 0x0001);
+        return BodyCreator.rectangleBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size);
     }
 
     @Override
     public void update(float delta) {
+        World world = this.body.getWorld();
+        Vector2 currentPosition = this.body.getWorldCenter();
+        Vector2 nextPosition = currentPosition.cpy().add(this.body.getLinearVelocity().cpy().scl(1f/60f));
+        world.rayCast(this, currentPosition, nextPosition);
+    }
 
+    @Override
+    public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+        System.out.println("Projectile.reportRayFixture");
+        System.out.println(fixture.getBody().getUserData().getClass().toString());
+        System.out.println("fraction = " + fraction);
+//        if(this.body.getFixtureList().size > 0)
+//            this.onCollision(this.body.getFixtureList().first(), null);
+        return 0;
     }
 }

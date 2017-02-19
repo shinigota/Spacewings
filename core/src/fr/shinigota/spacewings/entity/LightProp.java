@@ -9,14 +9,14 @@ import fr.shinigota.spacewings.entity.behavior.Collidable;
 import fr.shinigota.spacewings.entity.data.CollidableData;
 import fr.shinigota.spacewings.entity.tool.ArrayTools;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
-import fr.shinigota.spacewings.renderable.world.GameWorld;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by Benjamin on 07/02/2017.
  */
 public class LightProp extends DynamicEntity implements Collidable {
-    public LightProp(Vector2 position, Vector2 size, World world) {
-        super(world, position, size, false);
+    public LightProp(EntityManager entityManager, Vector2 position, Vector2 size, World world) {
+        super(entityManager, world, position, size, false);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LightProp extends DynamicEntity implements Collidable {
     }
 
     @Override
-    public void onCollision(Fixture fixture, ContactImpulse impulse, GameWorld gameWorld) {
+    public void onCollision(Fixture fixture, ContactImpulse impulse) {
         if (impulse == null)
             return;
 
@@ -49,8 +49,8 @@ public class LightProp extends DynamicEntity implements Collidable {
         this.damage(normalImpulses * 100);
         this.damage(tangentImpulses * 100);
         if (this.isDead()) {
-            gameWorld.addFixtureToDestroy(fixture);
-            gameWorld.addBodyToDestroy(this.body);
+            this.entityManager.addFixtureToDestroy(fixture);
+            this.entityManager.addBodyToDestroy(this.body);
         }
     }
 

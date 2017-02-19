@@ -5,15 +5,19 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.behavior.Collidable;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/5/17.
  */
 public abstract class Entity {
+    protected EntityManager entityManager;
     protected final Body body;
     protected float health;
 
-    public Entity(World world, Vector2 position, Vector2 size, boolean sensor) {
+    public Entity(EntityManager entityManager, World world, Vector2 position, Vector2 size, boolean sensor) {
+        this.entityManager = entityManager;
+        this.entityManager.addEntity(this);
         this.body = this.generateBody(world, position,  size, sensor);
         this.body.setUserData(this);
         this.health = this instanceof Collidable ? ((Collidable)this).initHealth() : 0;

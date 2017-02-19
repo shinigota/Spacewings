@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.*;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.tool.BodyCreator;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/5/17.
@@ -12,14 +13,14 @@ import fr.shinigota.spacewings.entity.tool.BodyCreator;
 public abstract class DynamicEntity extends Entity {
     protected boolean wake;
 
-    public DynamicEntity(World world, Vector2 position, Vector2 size, boolean sensor) {
-        super(world, position, size, sensor);
+    public DynamicEntity(EntityManager entityManager, World world, Vector2 position, Vector2 size, boolean sensor) {
+        super(entityManager, world, position, size, sensor);
         this.wake = false;
     }
 
     @Override
     protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.squareBody(world, BodyType.DynamicBody, this.generateFixtureDef(), position, size);
+        return BodyCreator.rectangleBody(world, BodyType.DynamicBody, this.generateFixtureDef(), position, size);
     }
 
     public abstract void update(float delta);

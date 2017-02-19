@@ -12,8 +12,11 @@ import fr.shinigota.spacewings.entity.LightProp;
 import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.entity.tool.UnscaledVector2;
 import fr.shinigota.spacewings.entity.tool.WorldContactListener;
+import fr.shinigota.spacewings.entity.type.DynamicEntity;
+import fr.shinigota.spacewings.entity.type.Entity;
 import fr.shinigota.spacewings.entity.type.StaticEntity;
 import fr.shinigota.spacewings.renderable.Renderable;
+import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 
 /**
@@ -26,9 +29,9 @@ public class GameWorld extends Renderable {
     private final Array<Fixture> fixturesToDestroy;
     private final Array<Body> bodiesToDestroy;
 
-    private final BlockingEntity staticEntity;
-    private final HeavyProp heavyProp;
-    private final LightProp lightProp;
+    private final EntityManager entityManager;
+
+    private final Array<Entity> entities;
 
     private Player player;
 
@@ -40,17 +43,26 @@ public class GameWorld extends Renderable {
 
         this.fixturesToDestroy = new Array<Fixture>();
         this.bodiesToDestroy = new Array<Body>();
+        this.entities = new Array<Entity>();
 
-        this.staticEntity = new BlockingEntity(new UnscaledVector2(0, -100), new UnscaledVector2(500,50), this.world);
-        this.heavyProp = new HeavyProp(new UnscaledVector2(0, 47), new UnscaledVector2(300, 100), this.world);
-        this.lightProp = new LightProp(new UnscaledVector2(32, 120), new UnscaledVector2(25, 25), this.world);
-        this.player = new Player(new UnscaledVector2(70, 300), new UnscaledVector2(50, 50), this.world);
+        this.entityManager = new EntityManager(this.entities, this.fixturesToDestroy, this.bodiesToDestroy);
+        this.player = new Player(this.entityManager, new UnscaledVector2(70, 300), new UnscaledVector2(50, 50), this.world);
+
+        new BlockingEntity(this.entityManager, new UnscaledVector2(0, -100), new UnscaledVector2(500,50), this.world);
+        new HeavyProp(this.entityManager, new UnscaledVector2(0, 47), new UnscaledVector2(300, 100), this.world);
+        new LightProp(this.entityManager, new UnscaledVector2(32, 120), new UnscaledVector2(25, 25), this.world);
     }
 
     @Override
     public void update(float delta) {
         world.step(1f/60f, 6, 2);
-        this.player.update(delta);
+
+        for (Entity entity : this.entities) {
+            if (entity instanceof DynamicEntity) {
+                DynamicEntity dynamicEntity = (DynamicEntity) entity;
+                dynamicEntity.update(delta);
+            }
+        }
 
         this.destroyFixtures();
         this.destroyBodies();
@@ -91,5 +103,9 @@ public class GameWorld extends Renderable {
 
     public void addBodyToDestroy(Body body) {
         this.bodiesToDestroy.add(body);
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }
