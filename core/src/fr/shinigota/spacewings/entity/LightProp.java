@@ -30,7 +30,9 @@ public class LightProp extends DynamicEntity implements Collidable {
 
     @Override
     public void update(float delta) {
-
+        if (this.isDead()) {
+            this.destroy();
+        }
     }
 
     @Override
@@ -48,10 +50,7 @@ public class LightProp extends DynamicEntity implements Collidable {
 
         this.damage(normalImpulses * 100);
         this.damage(tangentImpulses * 100);
-        if (this.isDead()) {
-            this.entityManager.addFixtureToDestroy(fixture);
-            this.entityManager.addBodyToDestroy(this.body);
-        }
+
     }
 
     @Override

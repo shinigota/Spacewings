@@ -2,6 +2,7 @@ package fr.shinigota.spacewings.entity.type;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.behavior.Collidable;
@@ -27,6 +28,18 @@ public abstract class Entity {
 
     }
 
+    public void destroy() {
+        for(Fixture fixture : this.body.getFixtureList()) {
+            this.entityManager.addFixtureToDestroy(fixture);
+        }
+        this.entityManager.addBodyToDestroy(this.body);
+        this.entityManager.addEntityToDestroy(this);
+    }
+
+    public void destroyNextStep() {
+        this.entityManager.addEntityToDestroyNextStep(this);
+    }
+
     protected abstract FixtureDef generateFixtureDef();
 
     protected abstract Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor);
@@ -47,7 +60,7 @@ public abstract class Entity {
         return this.health <= 0;
     }
 
-    protected void damage(float amount) {
+    public void damage(float amount) {
         this.health -= amount;
     }
 }

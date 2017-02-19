@@ -8,6 +8,7 @@ import fr.shinigota.spacewings.entity.data.CollidableData;
 import fr.shinigota.spacewings.entity.tool.BodyCreator;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
+import fr.shinigota.spacewings.entity.type.Entity;
 import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
@@ -17,6 +18,12 @@ public class Projectile extends DynamicEntity implements RayCastCallback{
     public final static short COLLISION_MASK = -1;
 //    public final static short COLLISION_CATEGORY = 0x0002;
     private static float SPEED = 30;
+
+    private static float DAMAGE = 50;
+
+    private float closestFraction;
+    private Fixture closestFixture;
+
     public Projectile(EntityManager entityManager, World world, Vector2 position, Vector2 size, Vector2 direction) {
         super(entityManager, world, position, size, true);
 
@@ -26,10 +33,12 @@ public class Projectile extends DynamicEntity implements RayCastCallback{
 
 
     public void onCollision(Fixture fixture, ContactImpulse impulse) {
-        this.entityManager.addFixtureToDestroy(fixture);
-        this.entityManager.addBodyToDestroy(this.body);
+        if (fixture.getBody().getUserData() instanceof Entity) {
+            Entity entity = (Entity) fixture.getBody().getUserData();
+            entity.damage(DAMAGE);
+        }
+        this.destroyNextStep();
     }
-
 
     @Override
     protected FixtureDef generateFixtureDef() {
@@ -43,19 +52,23 @@ public class Projectile extends DynamicEntity implements RayCastCallback{
 
     @Override
     public void update(float delta) {
+        this.closestFixture = null;
+        this.closestFraction = 1;
         World world = this.body.getWorld();
         Vector2 currentPosition = this.body.getWorldCenter();
         Vector2 nextPosition = currentPosition.cpy().add(this.body.getLinearVelocity().cpy().scl(1f/60f));
         world.rayCast(this, currentPosition, nextPosition);
+        if (this.closestFixture != null) {
+            this.onCollision(this.closestFixture, null);
+        }
     }
 
     @Override
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-        System.out.println("Projectile.reportRayFixture");
-        System.out.println(fixture.getBody().getUserData().getClass().toString());
-        System.out.println("fraction = " + fraction);
-//        if(this.body.getFixtureList().size > 0)
-//            this.onCollision(this.body.getFixtureList().first(), null);
+        if (fraction < this.closestFraction) {
+            this.closestFraction = fraction;
+            this.closestFixture = fixture;
+        }
         return 0;
     }
 }
