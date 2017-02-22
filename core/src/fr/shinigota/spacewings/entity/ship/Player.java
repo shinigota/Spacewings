@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import fr.shinigota.spacewings.entity.tool.BodyCreator;
+import fr.shinigota.spacewings.entity.tool.BodyFactory;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.fixture.Turret;
@@ -40,8 +40,9 @@ public class Player extends DynamicEntity {
         this.addShipFixture(new Turret(this));
     }
 
-    private void addShipFixture(Turret turret) {
-        this.turrets.add(turret);
+    @Override
+    protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
+        return BodyFactory.rectangleBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, Player.COLLISION_CATEGORY, (short) 0x0001);
     }
 
     @Override
@@ -118,19 +119,19 @@ public class Player extends DynamicEntity {
         return ! (desiredAngleDeg - DESIRED_ANGLE_CHECK_MARGIN <= angle && angle <= desiredAngleDeg + DESIRED_ANGLE_CHECK_MARGIN);
     }
 
+    private void addShipFixture(Turret turret) {
+        this.turrets.add(turret);
+    }
+
     public void shoot() {
-        for (Turret turret : this.turrets) {
+        for (Turret turret : this.turrets)
             if (turret.canShoot())
                 turret.shoot(this.entityManager);
-        }
     }
 
     public void setShooting(boolean shooting) {
         this.shooting = shooting;
     }
 
-    @Override
-    protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.rectangleBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size, Player.COLLISION_CATEGORY, (short) 0x0001);
-    }
+
 }

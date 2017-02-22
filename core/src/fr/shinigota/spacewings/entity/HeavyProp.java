@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by benjamin on 2/5/17.
@@ -21,7 +22,5 @@ public class HeavyProp extends DynamicEntity {
     }
 
     @Override
-    public void update(float delta) {
-
-    }
+    public void update(float delta) { }
 }

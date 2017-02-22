@@ -24,8 +24,12 @@ public abstract class Entity {
         this.health = this instanceof Collidable ? ((Collidable)this).initHealth() : 0;
     }
 
-    protected void addEntityFixture(Entity entity) {
+    protected abstract Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor);
 
+    protected abstract FixtureDef generateFixtureDef();
+
+    public void destroyNextStep() {
+        this.entityManager.addEntityToDestroyNextStep(this);
     }
 
     public void destroy() {
@@ -36,13 +40,13 @@ public abstract class Entity {
         this.entityManager.addEntityToDestroy(this);
     }
 
-    public void destroyNextStep() {
-        this.entityManager.addEntityToDestroyNextStep(this);
+    public boolean isDead() {
+        return this.health <= 0;
     }
 
-    protected abstract FixtureDef generateFixtureDef();
-
-    protected abstract Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor);
+    public void damage(float amount) {
+        this.health -= amount;
+    }
 
     public Body getBody() {
         return body;
@@ -54,13 +58,5 @@ public abstract class Entity {
 
     public float getAngle() {
         return this.body.getAngle();
-    }
-
-    public boolean isDead() {
-        return this.health <= 0;
-    }
-
-    public void damage(float amount) {
-        this.health -= amount;
     }
 }

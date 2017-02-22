@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.*;
 import com.badlogic.gdx.physics.box2d.World;
-import fr.shinigota.spacewings.entity.tool.BodyCreator;
+import fr.shinigota.spacewings.entity.tool.BodyFactory;
 import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
@@ -17,6 +17,6 @@ public abstract class StaticEntity extends Entity {
 
     @Override
     protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.rectangleBody(world, BodyType.StaticBody, this.generateFixtureDef(), position, size);
+        return BodyFactory.rectangleBody(world, BodyType.StaticBody, this.generateFixtureDef(), position, size);
     }
 }

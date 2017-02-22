@@ -10,11 +10,10 @@ import fr.shinigota.spacewings.entity.BlockingEntity;
 import fr.shinigota.spacewings.entity.HeavyProp;
 import fr.shinigota.spacewings.entity.LightProp;
 import fr.shinigota.spacewings.entity.ship.Player;
-import fr.shinigota.spacewings.entity.tool.UnscaledVector2;
+import fr.shinigota.spacewings.entity.tool.CommonTools;
 import fr.shinigota.spacewings.entity.tool.WorldContactListener;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.entity.type.Entity;
-import fr.shinigota.spacewings.entity.type.StaticEntity;
 import fr.shinigota.spacewings.renderable.Renderable;
 import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
@@ -38,11 +37,13 @@ public class GameWorld extends Renderable {
         this.world.setContactListener(this.worldContactListener);
 
         this.entityManager = new EntityManager();
-        this.player = new Player(this.entityManager, new UnscaledVector2(70, 300), new UnscaledVector2(50, 50), this.world);
+        this.player = new Player(this.entityManager, CommonTools.UnscaledVector2(70, 300), CommonTools.UnscaledVector2(50, 50), this.world);
 
-        new BlockingEntity(this.entityManager, new UnscaledVector2(0, -100), new UnscaledVector2(500,50), this.world);
-        new HeavyProp(this.entityManager, new UnscaledVector2(0, 47), new UnscaledVector2(300, 100), this.world);
-        new LightProp(this.entityManager, new UnscaledVector2(32, 120), new UnscaledVector2(25, 25), this.world);
+        new BlockingEntity(this.entityManager, CommonTools.UnscaledVector2(0, -100), CommonTools.UnscaledVector2(500, 100), this.world);
+        new HeavyProp(this.entityManager, CommonTools.UnscaledVector2(0, 47), CommonTools.UnscaledVector2(300, 100), this.world);
+        new LightProp(this.entityManager,  CommonTools.UnscaledVector2(32, 120), CommonTools.UnscaledVector2(25, 25), this.world);
+        new LightProp(this.entityManager,  CommonTools.UnscaledVector2(40, 170), CommonTools.UnscaledVector2(25, 25), this.world);
+        new LightProp(this.entityManager,  CommonTools.UnscaledVector2(-20, 224), CommonTools.UnscaledVector2(25, 25), this.world);
     }
 
     @Override

@@ -3,9 +3,7 @@ package fr.shinigota.spacewings.entity.ship;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import fr.shinigota.spacewings.entity.behavior.Collidable;
-import fr.shinigota.spacewings.entity.data.CollidableData;
-import fr.shinigota.spacewings.entity.tool.BodyCreator;
+import fr.shinigota.spacewings.entity.tool.BodyFactory;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.entity.type.Entity;
@@ -47,7 +45,7 @@ public class Projectile extends DynamicEntity implements RayCastCallback{
 
     @Override
     protected Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor) {
-        return BodyCreator.rectangleBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size);
+        return BodyFactory.rectangleBody(world, BodyDef.BodyType.DynamicBody, this.generateFixtureDef(), position, size);
     }
 
     @Override

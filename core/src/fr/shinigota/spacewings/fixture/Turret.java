@@ -8,7 +8,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import fr.shinigota.spacewings.Spacewings;
 import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.entity.ship.Projectile;
+import fr.shinigota.spacewings.entity.tool.CommonTools;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
+import fr.shinigota.spacewings.entity.tool.ShapeFactory;
 import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
@@ -24,13 +26,15 @@ public class Turret {
 
     public Turret(Player player) {
         this.player = player;
-        CircleShape circleShape = new CircleShape();
-        this.relativePosition = new Vector2(-20* Spacewings.PIXELS_TO_METERS,20*Spacewings.PIXELS_TO_METERS);
-        circleShape.setPosition(relativePosition);
-        circleShape.setRadius((SIZE*Spacewings.PIXELS_TO_METERS)/2);
+
+        this.relativePosition = CommonTools.UnscaledVector2(-20, 20);
 
         FixtureDef fixtureDef = FixtureType.ZERO.fixtureDef;
+
+        CircleShape circleShape = ShapeFactory.circleShape((SIZE*Spacewings.PIXELS_TO_METERS)/2);
+        circleShape.setPosition(relativePosition);
         fixtureDef.shape = circleShape;
+
         circleShape.dispose();
 
         this.lastShootTime = 0;
