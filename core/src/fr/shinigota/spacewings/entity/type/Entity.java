@@ -12,16 +12,15 @@ import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
  * Created by benjamin on 2/5/17.
  */
 public abstract class Entity {
-    protected EntityManager entityManager;
     protected final Body body;
     protected float health;
+    public EntityState entityState;
 
-    public Entity(EntityManager entityManager, World world, Vector2 position, Vector2 size, boolean sensor) {
-        this.entityManager = entityManager;
-        this.entityManager.addEntity(this);
+    public Entity(World world, Vector2 position, Vector2 size, boolean sensor) {
         this.body = this.generateBody(world, position,  size, sensor);
         this.body.setUserData(this);
         this.health = this instanceof Collidable ? ((Collidable)this).initHealth() : 0;
+        this.entityState = EntityState.ALIVE;
     }
 
     protected abstract Body generateBody(World world, Vector2 position, Vector2 size, boolean sensor);
@@ -29,15 +28,11 @@ public abstract class Entity {
     protected abstract FixtureDef generateFixtureDef();
 
     public void destroyNextStep() {
-        this.entityManager.addEntityToDestroyNextStep(this);
+        this.entityState = EntityState.DESTROYED_NEXT_STEP;
     }
 
     public void destroy() {
-        for(Fixture fixture : this.body.getFixtureList()) {
-            this.entityManager.addFixtureToDestroy(fixture);
-        }
-        this.entityManager.addBodyToDestroy(this.body);
-        this.entityManager.addEntityToDestroy(this);
+        this.entityState = EntityState.DESTROYED;
     }
 
     public boolean isDead() {
@@ -60,3 +55,4 @@ public abstract class Entity {
         return this.body.getAngle();
     }
 }
+

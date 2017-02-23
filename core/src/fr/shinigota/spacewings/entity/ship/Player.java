@@ -11,7 +11,6 @@ import fr.shinigota.spacewings.entity.tool.BodyFactory;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.fixture.Turret;
-import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/4/17.
@@ -31,10 +30,10 @@ public class Player extends DynamicEntity {
     protected float acceleration;
 
     private Array<Turret> turrets;
-    private boolean shooting;
+    private boolean askingFire;
 
-    public Player(EntityManager entityManager, Vector2 position, Vector2 size, World world) {
-        super(entityManager, world, position, size, false);
+    public Player(Vector2 position, Vector2 size, World world) {
+        super(world, position, size, false);
         this.acceleration = 0;
         this.turrets = new Array<Turret>(1);
         this.addShipFixture(new Turret(this));
@@ -58,10 +57,6 @@ public class Player extends DynamicEntity {
             this.updateSpeed(delta);
 
             this.wake = this.isValidVelocity(delta) || this.isValidAngle();
-        }
-
-        if (this.shooting) {
-            this.shoot();
         }
     }
 
@@ -123,15 +118,19 @@ public class Player extends DynamicEntity {
         this.turrets.add(turret);
     }
 
-    public void shoot() {
+    public Array<Projectile> shoot() {
+        Array<Projectile> bulletsShot = new Array<Projectile>();
         for (Turret turret : this.turrets)
             if (turret.canShoot())
-                turret.shoot(this.entityManager);
+                bulletsShot.add(turret.shoot());
+        return bulletsShot;
     }
 
-    public void setShooting(boolean shooting) {
-        this.shooting = shooting;
+    public void setAskingFire(boolean askingFire) {
+        this.askingFire = askingFire;
     }
 
-
+    public boolean isAskingFire() {
+        return askingFire;
+    }
 }

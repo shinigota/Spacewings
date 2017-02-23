@@ -7,14 +7,12 @@ import fr.shinigota.spacewings.entity.tool.BodyFactory;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
 import fr.shinigota.spacewings.entity.type.Entity;
-import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/11/17.
  */
 public class Projectile extends DynamicEntity implements RayCastCallback{
     public final static short COLLISION_MASK = -1;
-//    public final static short COLLISION_CATEGORY = 0x0002;
     private static float SPEED = 30;
 
     private static float DAMAGE = 50;
@@ -22,8 +20,8 @@ public class Projectile extends DynamicEntity implements RayCastCallback{
     private float closestFraction;
     private Fixture closestFixture;
 
-    public Projectile(EntityManager entityManager, World world, Vector2 position, Vector2 size, Vector2 direction) {
-        super(entityManager, world, position, size, true);
+    public Projectile(World world, Vector2 position, Vector2 size, Vector2 direction) {
+        super(world, position, size, true);
 
         this.body.setTransform(this.body.getPosition(), (direction.angle() - 90) * MathUtils.degreesToRadians);
         this.body.applyLinearImpulse(direction.scl(SPEED), this.body.getWorldCenter(), true);

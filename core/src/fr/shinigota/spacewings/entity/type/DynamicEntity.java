@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.*;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.tool.BodyFactory;
-import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/5/17.
@@ -13,8 +12,8 @@ import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 public abstract class DynamicEntity extends Entity {
     protected boolean wake;
 
-    public DynamicEntity(EntityManager entityManager, World world, Vector2 position, Vector2 size, boolean sensor) {
-        super(entityManager, world, position, size, sensor);
+    public DynamicEntity(World world, Vector2 position, Vector2 size, boolean sensor) {
+        super(world, position, size, sensor);
         this.wake = false;
     }
 

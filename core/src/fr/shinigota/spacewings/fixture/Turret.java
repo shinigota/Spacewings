@@ -44,11 +44,11 @@ public class Turret {
         return TimeUtils.millis() >= RATE_OF_FIRE + lastShootTime;
     }
 
-    public Projectile shoot(EntityManager entityManager) {
+    public Projectile shoot() {
         this.lastShootTime = TimeUtils.millis();
         float angle = this.player.getBody().getAngle() * MathUtils.radiansToDegrees;
         Vector2 direction = Vector2.Y.cpy().rotate(angle);
         Vector2 projectileOrigin = relativePosition.cpy().rotate(player.getAngle() * MathUtils.radiansToDegrees).add(player.getPosition());
-        return new Projectile(entityManager, this.player.getBody().getWorld(), projectileOrigin, new Vector2(5*Spacewings.PIXELS_TO_METERS, 10*Spacewings.PIXELS_TO_METERS), direction);
+        return new Projectile(this.player.getBody().getWorld(), projectileOrigin, new Vector2(5*Spacewings.PIXELS_TO_METERS, 10*Spacewings.PIXELS_TO_METERS), direction);
     }
 }

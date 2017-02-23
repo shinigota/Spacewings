@@ -5,14 +5,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.*;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.shinigota.spacewings.entity.tool.BodyFactory;
-import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by benjamin on 2/5/17.
  */
 public abstract class StaticEntity extends Entity {
-    public StaticEntity(EntityManager entityManager, Vector2 position, Vector2 size, World world, boolean sensor) {
-        super(entityManager, world, position, size, sensor);
+    public StaticEntity(Vector2 position, Vector2 size, World world, boolean sensor) {
+        super(world, position, size, sensor);
     }
 
     @Override

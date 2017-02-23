@@ -10,14 +10,13 @@ import fr.shinigota.spacewings.entity.data.CollidableData;
 import fr.shinigota.spacewings.entity.tool.ArrayTools;
 import fr.shinigota.spacewings.entity.tool.FixtureType;
 import fr.shinigota.spacewings.entity.type.DynamicEntity;
-import fr.shinigota.spacewings.renderable.world.tool.EntityManager;
 
 /**
  * Created by Benjamin on 07/02/2017.
  */
 public class LightProp extends DynamicEntity implements Collidable {
-    public LightProp(EntityManager entityManager, Vector2 position, Vector2 size, World world) {
-        super(entityManager, world, position, size, false);
+    public LightProp(Vector2 position, Vector2 size, World world) {
+        super(world, position, size, false);
     }
 
     @Override
@@ -35,7 +34,6 @@ public class LightProp extends DynamicEntity implements Collidable {
 
         this.damage(normalImpulses * 100);
         this.damage(tangentImpulses * 100);
-
     }
 
     @Override

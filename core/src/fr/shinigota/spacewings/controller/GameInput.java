@@ -40,14 +40,14 @@ public class GameInput implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Player player = this.gameWorld.getPlayer();
-        player.setShooting(true);
+        player.setAskingFire(true);
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Player player = this.gameWorld.getPlayer();
-        player.setShooting(false);
+        player.setAskingFire(false);
         return true;
     }
 
