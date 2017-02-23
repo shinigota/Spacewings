@@ -4,7 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import fr.shinigota.spacewings.Spacewings;
-import fr.shinigota.spacewings.entity.Player;
+import fr.shinigota.spacewings.entity.ship.Player;
 import fr.shinigota.spacewings.renderable.world.GameWorld;
 import fr.shinigota.spacewings.renderer.world.GameWorldRenderer;
 
@@ -39,35 +39,45 @@ public class GameInput implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        Player player = this.gameWorld.getPlayer();
+        player.setAskingFire(true);
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        Player player = this.gameWorld.getPlayer();
+        player.setAskingFire(false);
+        return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        handlePlayerRotation(screenX, screenY);
+
+        return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Player player = this.gameWorld.getPlayer();
-        Vector2 target = this.gameWorldRenderer.unproject(new Vector2(screenX, screenY));
-        Vector2 toTarget = target.cpy().sub(player.getPosition());
-        float angle = MathUtils.atan2(-toTarget.x, toTarget.y);
-        this.gameWorld.getPlayer().setDesiredAngle(angle);
-        this.gameWorld.getPlayer().setWake(true);
+        handlePlayerRotation(screenX, screenY);
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean scrolled(int amount) {
         this.gameWorld.getPlayer().changeDesiredAcceleration(-amount);
         this.gameWorld.getPlayer().setWake(true);
-        return false;
+        return true;
+    }
+
+    private void handlePlayerRotation(int screenX, int screenY) {
+        Player player = this.gameWorld.getPlayer();
+        Vector2 target = this.gameWorldRenderer.unproject(new Vector2(screenX, screenY));
+        Vector2 toTarget = target.cpy().sub(player.getPosition());
+        float angle = MathUtils.atan2(-toTarget.x, toTarget.y);
+        this.gameWorld.getPlayer().setDesiredAngle(angle);
+        this.gameWorld.getPlayer().setWake(true);
     }
 }
